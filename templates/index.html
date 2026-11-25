@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A local generative AI writing studio powered by Ollama and Qwen.">
+  <title>GenAI Content Studio</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="/">
+        <span class="brand-mark">✦</span>
+        <span>GenAI <b>Studio</b></span>
+      </a>
+      <div class="status-wrap">
+        <span id="status-dot" class="status-dot"></span>
+        <span id="status-text">Checking model...</span>
+        <span class="model-chip">{{ model_name }}</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <p class="eyebrow">YOUR LOCAL AI WORKSPACE</p>
+        <h1>Ideas in.<br><span>Possibilities out.</span></h1>
+        <p class="hero-copy">Create, explore and refine ideas with a generative language model running on your own machine.</p>
+      </section>
+
+      <section class="workspace">
+        <div class="panel prompt-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">01 / INPUT</p>
+              <h2>What should we create?</h2>
+            </div>
+            <button id="clear-prompt" class="text-button" type="button">Clear</button>
+          </div>
+
+          <label class="field-label" for="prompt">YOUR PROMPT</label>
+          <textarea id="prompt" maxlength="5000" placeholder="Example: Explain machine learning to a first-year computer science student with a simple real-world example..."></textarea>
+          <div class="prompt-meta"><span>Be specific for better results</span><span id="char-count">0 / 5000</span></div>
+
+          <div class="templates">
+            <span class="field-label">QUICK START</span>
+            <div class="template-buttons">
+              <button class="template-btn" data-prompt="Explain the concept of machine learning in simple language. Include one real-world example and a short summary." type="button">Learn a concept</button>
+              <button class="template-btn" data-prompt="Write a creative short story about a student who builds an AI project that solves a real community problem. Use an engaging opening and a hopeful ending." type="button">Write a story</button>
+              <button class="template-btn" data-prompt="Create a practical 7-day beginner roadmap for learning Python for AI and machine learning. Include daily topics and a small exercise." type="button">Make a roadmap</button>
+              <button class="template-btn" data-prompt="Generate five innovative but realistic generative AI hackathon project ideas. For each, explain the problem, solution, and core features." type="button">Brainstorm ideas</button>
+            </div>
+          </div>
+
+          <div class="settings">
+            <div class="setting">
+              <label class="field-label" for="temperature">CREATIVITY <strong id="temperature-value">0.7</strong></label>
+              <input id="temperature" type="range" min="0" max="2" step="0.1" value="0.7">
+              <div class="range-labels"><span>Focused</span><span>More creative</span></div>
+            </div>
+            <div class="setting">
+              <label class="field-label" for="max-tokens">MAX OUTPUT LENGTH</label>
+              <select id="max-tokens">
+                <option value="128">Short</option>
+                <option value="300" selected>Medium</option>
+                <option value="600">Long</option>
+                <option value="1000">Extra long</option>
+              </select>
+            </div>
+          </div>
+
+          <button id="generate-btn" class="generate-btn" type="button">
+            <span>✦</span> Generate response <span class="button-arrow">↗</span>
+          </button>
+          <p class="privacy-note">Runs locally through Ollama. Your prompts are not sent to a hosted AI service by this app.</p>
+        </div>
+
+        <div class="panel output-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">02 / OUTPUT</p>
+              <h2>Your creation</h2>
+            </div>
+            <button id="copy-btn" class="text-button" type="button" disabled>Copy text</button>
+          </div>
+          <div id="output" class="output-area">
+            <div class="empty-state">
+              <div class="sparkle">✧</div>
+              <h3>Your next idea starts here.</h3>
+              <p>Enter a prompt, choose your settings, and generate your first response.</p>
+            </div>
+          </div>
+          <div id="output-footer" class="output-footer hidden">
+            <span id="output-model"></span>
+            <span id="output-time"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="history-section">
+        <div class="section-heading">
+          <div><p class="eyebrow">03 / YOUR WORK</p><h2>Recent generations</h2></div>
+          <button id="refresh-history" class="text-button" type="button">Refresh ↻</button>
+        </div>
+        <div id="history-list" class="history-list">
+          <p class="muted">Your generated responses will appear here.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer><span>GenAI Content Studio</span><span>Built with Flask · Ollama · Qwen</span></footer>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
